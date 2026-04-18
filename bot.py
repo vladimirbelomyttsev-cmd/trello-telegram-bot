@@ -51,18 +51,18 @@ async def vlad(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if not message.reply_to_message:
-        await message.reply_text("Не получилось")
+        await context.bot.send_message(chat_id=message.chat_id, text="Не получилось")
         return
 
     original_message = message.reply_to_message
 
     if not original_message.text:
-        await message.reply_text("Не получилось")
+        await context.bot.send_message(chat_id=message.chat_id, text="Не получилось")
         return
 
     task_text = original_message.text.strip()
     if not task_text:
-        await message.reply_text("Не получилось")
+        await context.bot.send_message(chat_id=message.chat_id, text="Не получилось")
         return
 
     author = original_message.from_user
@@ -84,17 +84,19 @@ async def vlad(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = requests.post(url, params=params, timeout=15)
         response.raise_for_status()
     except requests.RequestException:
-        await message.reply_text("Не получилось")
+        await context.bot.send_message(chat_id=message.chat_id, text="Не получилось")
         return
 
     card = response.json()
     card_url = card.get("url", "")
 
     if card_url:
-        await message.reply_text(f"Финализировал. {card_url}")
+        await context.bot.send_message(
+            chat_id=message.chat_id,
+            text=f"Финализировал. {card_url}"
+        )
     else:
-        await message.reply_text("Не получилось")
-
+        await context.bot.send_message(chat_id=message.chat_id, text="Не получилось")
 
 def main():
     required_vars = {
