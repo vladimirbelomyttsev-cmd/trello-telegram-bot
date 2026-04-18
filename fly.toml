@@ -3,3 +3,6 @@ primary_region = "arn"
 
 [build]
   dockerfile = "Dockerfile"
+
+[processes]
+  app = "python bot.py"
